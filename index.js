@@ -1,7 +1,7 @@
 const tiles = [];
 
 let grid = [];
-const DIM = 3;
+const DIM = 15;
 
 const BLANK = 0;
 const UP = 1;
@@ -51,7 +51,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(800, 800);
 
   for (let i = 0; i < DIM * DIM; i++) {
     grid[i] = {
@@ -89,15 +89,22 @@ function draw() {
     for (let i = 0; i < DIM; i++) {
       const cell = grid[i + j * DIM];
 
+      // 0+0*2 = 0
+      // 0+1*2 = 2
+      // 1+0*2 = 1
+      // 1+1*2 = 3
       if (cell.collapsed) {
         let index = cell.options[0];
         image(tiles[index], i * w, j * h, w, h);
       } else {
-        console.table(grid);
-
         fill(0);
         stroke(255);
         rect(i * w, j * h, w, h);
+        textAlign(CENTER, CENTER);
+        fill(255);
+        textSize(16);
+        text("i: " + (i + j * DIM), i * w + w / 2, j * h + h / 3); // Positioning index in the top half of the rectangle
+        text("var: " + cell.options.length, i * w + w / 2, j * h + (2 * h) / 3);
       }
     }
   }
@@ -124,7 +131,7 @@ function draw() {
       break;
     }
   }
-  if (stopIndex > 0) gridCopy.slice(stopIndex);
+  if (stopIndex > 0) gridCopy.splice(stopIndex);
 
   const cell = random(gridCopy);
 
@@ -142,11 +149,11 @@ function draw() {
         nextGrid[index] = grid[index];
       } else {
         let options = [BLANK, UP, RIGHT, DOWN, LEFT];
-        let validOptions = [];
 
         // Look up
         if (j > 0) {
           let up = grid[i + (j - 1) * DIM];
+          let validOptions = [];
 
           for (const option of up.options) {
             let valid = rules[option][2];
@@ -158,6 +165,7 @@ function draw() {
         // Look right
         if (i < DIM - 1) {
           let right = grid[i + 1 + j * DIM];
+          let validOptions = [];
 
           for (const option of right.options) {
             let valid = rules[option][3];
@@ -169,6 +177,7 @@ function draw() {
         // Look down
         if (j < DIM - 1) {
           let down = grid[i + (j + 1) * DIM];
+          let validOptions = [];
 
           for (const option of down.options) {
             let valid = rules[option][0];
@@ -179,6 +188,7 @@ function draw() {
         // Look left
         if (i > 0) {
           let left = grid[i - 1 + j * DIM];
+          let validOptions = [];
 
           for (const option of left.options) {
             let valid = rules[option][1];
@@ -195,5 +205,6 @@ function draw() {
     }
   }
   grid = nextGrid;
-  console.table(grid);
+
+  // noLoop();
 }
