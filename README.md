@@ -6,6 +6,10 @@ Here's a README for the code you've provided:
 
 This project is a procedural generation tool based on tile collapsing, similar to the Wave Function Collapse algorithm. It uses predefined rules to propagate constraints across a grid and generate unique patterns by limiting options based on neighboring cells.
 
+## Demo
+
+You can view the project demo at the following link: [WaveCollapseGrid Demo](https://lobatskiy-repo.github.io/WaveCollapseGrid/)
+
 ## Table of Contents
 
 1. [Overview](#overview)
